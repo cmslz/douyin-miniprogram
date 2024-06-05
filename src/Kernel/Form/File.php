@@ -49,7 +49,7 @@ class File extends DataPart
                 $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
                 $contentType = $mimeTypes->getMimeTypes($ext)[0] ?? 'application/octet-stream';
             } else {
-                $tmp = tempnam(sys_get_temp_dir(), 'easywechat');
+                $tmp = tempnam(sys_get_temp_dir(), 'cmslz_douyin_mini_program');
                 if (! $tmp) {
                     throw new RuntimeException('Failed to create temporary file.');
                 }

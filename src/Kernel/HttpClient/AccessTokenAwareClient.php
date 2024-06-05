@@ -9,11 +9,11 @@ namespace Cmslz\DouyinMiniProgram\Kernel\HttpClient;
 use Closure;
 use Cmslz\DouyinMiniProgram\Kernel\Contracts\AccessToken as AccessTokenInterface;
 use Cmslz\DouyinMiniProgram\Kernel\Contracts\AccessTokenAwareHttpClient as AccessTokenAwareHttpClientInterface;
+use Cmslz\DouyinMiniProgram\Kernel\Exceptions\InvalidArgumentException;
 use Cmslz\DouyinMiniProgram\Kernel\Traits\MockableHttpClient;
 use Symfony\Component\HttpClient\AsyncDecoratorTrait;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\MockHttpClient;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -48,18 +48,26 @@ class AccessTokenAwareClient implements AccessTokenAwareHttpClientInterface
     }
 
     /**
-     * @param  array<string, mixed>  $options
-     *
-     * @throws TransportExceptionInterface
+     * @param string $method
+     * @param string $url
+     * @param array<string, mixed> $options
+     * @param bool $mergeHeaderToken
+     * @return Response
+     * @throws InvalidArgumentException
      */
-    public function request(string $method, string $url, array $options = []): Response
+    public function request(string $method, string $url, array $options = [], bool $mergeHeaderToken = true): Response
     {
-        if ($this->accessToken) {
-            $options['query'] = array_merge((array) ($options['query'] ?? []), $this->accessToken->toQuery());
+        $headers = $options['headers'] ?? [];
+        if ($this->accessToken && $mergeHeaderToken) {
+            $headers = array_merge($headers, $this->accessToken->toClientTokenQuery());
         }
-
+        $options['headers'] = $headers;
         $options = RequestUtil::formatBody($this->mergeThenResetPrepends($options));
+        return $this->requestCustom($method, $url, $options);
+    }
 
+    public function requestCustom(string $method, string $url, array $options = []): Response
+    {
         return new Response(
             response: $this->client->request($method, ltrim($url, '/'), $options),
             failureJudge: $this->failureJudge,
@@ -68,7 +76,8 @@ class AccessTokenAwareClient implements AccessTokenAwareHttpClientInterface
     }
 
     /**
-     * @param  array<int, mixed>  $arguments
+     * @param array<int, mixed> $arguments
+     * @throws InvalidArgumentException
      */
     public function __call(string $name, array $arguments): mixed
     {

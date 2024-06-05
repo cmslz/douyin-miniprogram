@@ -118,7 +118,7 @@ class RequestUtil
             }
 
             if (!$contentType) {
-                $options['headers']['Content-Type'] = [$options['headers'][] = 'Content-Type: application/json'];
+                $options['headers']['Content-Type'] = 'application/json';
             }
 
             $options['body'] = $options['json'];

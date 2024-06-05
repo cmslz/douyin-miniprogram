@@ -69,7 +69,7 @@ class Response implements Jsonable, Arrayable, ArrayAccess, ResponseInterface, S
 
     public function judgeFailureUsing(callable $callback): static
     {
-        $this->failureJudge = $callback instanceof Closure ? $callback : fn (Response $response) => $callback($response);
+        $this->failureJudge = $callback instanceof Closure ? $callback : fn(Response $response) => $callback($response);
 
         return $this;
     }
@@ -82,7 +82,7 @@ class Response implements Jsonable, Arrayable, ArrayAccess, ResponseInterface, S
      */
     public function isSuccessful(): bool
     {
-        return ! $this->isFailed();
+        return !$this->isFailed();
     }
 
     /**
@@ -94,7 +94,7 @@ class Response implements Jsonable, Arrayable, ArrayAccess, ResponseInterface, S
     public function isFailed(): bool
     {
         if ($this->is('text') && $this->failureJudge) {
-            return (bool) ($this->failureJudge)($this);
+            return (bool)($this->failureJudge)($this);
         }
 
         try {
@@ -115,7 +115,6 @@ class Response implements Jsonable, Arrayable, ArrayAccess, ResponseInterface, S
     public function toArray(bool $throw = null): array
     {
         $throw ??= $this->throw;
-
         if ('' === $content = $this->response->getContent($throw)) {
             throw new BadResponseException('Response body is empty.');
         }
@@ -158,7 +157,8 @@ class Response implements Jsonable, Arrayable, ArrayAccess, ResponseInterface, S
         }
 
         if ($throw) {
-            throw new BadMethodCallException(sprintf('%s does\'t implements %s', \get_class($this->response), StreamableInterface::class));
+            throw new BadMethodCallException(sprintf('%s does\'t implements %s', \get_class($this->response),
+                StreamableInterface::class));
         }
 
         return StreamWrapper::createResource(new MockResponse());
@@ -172,45 +172,7 @@ class Response implements Jsonable, Arrayable, ArrayAccess, ResponseInterface, S
      */
     public function toDataUrl(): string
     {
-        return 'data:'.$this->getHeaderLine('content-type').';base64,'.base64_encode($this->getContent());
-    }
-
-    public function toPsrResponse(ResponseFactoryInterface $responseFactory = null, StreamFactoryInterface $streamFactory = null): \Psr\Http\Message\ResponseInterface
-    {
-        $streamFactory ??= $responseFactory instanceof StreamFactoryInterface ? $responseFactory : null;
-
-        if (null === $responseFactory || null === $streamFactory) {
-            if (! class_exists(Psr17Factory::class) && ! class_exists(Psr17FactoryDiscovery::class)) {
-                throw new \LogicException('You cannot use the "Symfony\Component\HttpClient\Psr18Client" as no PSR-17 factories have been provided. Try running "composer require nyholm/psr7".');
-            }
-
-            try {
-                $psr17Factory = class_exists(Psr17Factory::class, false) ? new Psr17Factory() : null;
-                $responseFactory ??= $psr17Factory ?? Psr17FactoryDiscovery::findResponseFactory(); /** @phpstan-ignore-line */
-                $streamFactory ??= $psr17Factory ?? Psr17FactoryDiscovery::findStreamFactory(); /** @phpstan-ignore-line */
-
-                /** @phpstan-ignore-next-line */
-            } catch (NotFoundException $e) {
-                throw new \LogicException('You cannot use the "Symfony\Component\HttpClient\HttplugClient" as no PSR-17 factories have been found. Try running "composer require nyholm/psr7".', 0, $e);
-            }
-        }
-
-        $psrResponse = $responseFactory->createResponse($this->getStatusCode());
-
-        foreach ($this->getHeaders(false) as $name => $values) {
-            foreach ($values as $value) {
-                $psrResponse = $psrResponse->withAddedHeader($name, $value);
-            }
-        }
-
-        $body = $this->response instanceof StreamableInterface ? $this->toStream(false) : StreamWrapper::createResource($this->response);
-        $body = $streamFactory->createStreamFromResource($body);
-
-        if ($body->isSeekable()) {
-            $body->seek(0);
-        }
-
-        return $psrResponse->withBody($body);
+        return 'data:' . $this->getHeaderLine('content-type') . ';base64,' . base64_encode($this->getContent());
     }
 
     /**
@@ -278,7 +240,7 @@ class Response implements Jsonable, Arrayable, ArrayAccess, ResponseInterface, S
     }
 
     /**
-     * @param  array<array-key, mixed>  $arguments
+     * @param array<array-key, mixed> $arguments
      */
     public function __call(string $name, array $arguments): mixed
     {

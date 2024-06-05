@@ -16,7 +16,7 @@ trait InteractWithCache
 
     protected int $cacheLifetime = 1500;
 
-    protected string $cacheNamespace = 'cmslz';
+    protected string $cacheNamespace = '';
 
     public function getCacheLifetime(): int
     {

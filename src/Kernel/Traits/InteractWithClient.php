@@ -14,7 +14,7 @@ trait InteractWithClient
 
     public function getClient(): AccessTokenAwareClient
     {
-        if (! $this->client) {
+        if (!$this->client) {
             $this->client = $this->createClient();
         }
 

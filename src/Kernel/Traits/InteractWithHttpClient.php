@@ -19,7 +19,7 @@ trait InteractWithHttpClient
 
     public function getHttpClient(): HttpClientInterface
     {
-        if (! $this->httpClient) {
+        if (!$this->httpClient) {
             $this->httpClient = $this->createHttpClient();
         }
 
@@ -45,9 +45,7 @@ trait InteractWithHttpClient
 
         $optionsByRegexp = Arr::get($options, 'options_by_regexp', []);
         unset($options['options_by_regexp']);
-
         $client = HttpClient::create(RequestUtil::formatDefaultOptions($options));
-
         if (! empty($optionsByRegexp)) {
             $client = new ScopingHttpClient($client, $optionsByRegexp);
         }

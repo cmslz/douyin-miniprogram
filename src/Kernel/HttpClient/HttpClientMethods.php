@@ -2,13 +2,14 @@
 
 namespace Cmslz\DouyinMiniProgram\Kernel\HttpClient;
 
+use Cmslz\DouyinMiniProgram\Kernel\Exceptions\InvalidArgumentException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface as ResponseInterfaceAlias;
 
 trait HttpClientMethods
 {
     /**
-     * @param  array<string, mixed>  $options
+     * @param array<string, mixed> $options
      *
      * @throws TransportExceptionInterface
      */
@@ -18,7 +19,7 @@ trait HttpClientMethods
     }
 
     /**
-     * @param  array<string, mixed>  $options
+     * @param array<string, mixed> $options
      *
      * @throws TransportExceptionInterface
      */
@@ -28,19 +29,31 @@ trait HttpClientMethods
     }
 
     /**
-     * @throws TransportExceptionInterface
+     * @param string $url
+     * @param array $data
+     * @param array $options
+     * @param bool $mergeHeaderToken
+     * @return Response|ResponseInterfaceAlias
+     * @throws InvalidArgumentException
      */
-    public function postJson(string $url, array $data = [], array $options = []): Response|ResponseInterfaceAlias
-    {
+    public function postJson(
+        string $url,
+        array $data = [],
+        array $options = [],
+        bool $mergeHeaderToken = false
+    ): Response|ResponseInterfaceAlias {
         $options['headers']['Content-Type'] = 'application/json';
 
         $options['json'] = $data;
-
-        return $this->request('POST', $url, RequestUtil::formatOptions($options, 'POST'));
+        return $this->request('POST', $url, RequestUtil::formatOptions($options, 'POST'), $mergeHeaderToken);
     }
 
     /**
-     * @throws TransportExceptionInterface
+     * @param string $url
+     * @param array $data
+     * @param array $options
+     * @return Response|ResponseInterfaceAlias
+     * @throws InvalidArgumentException
      */
     public function postXml(string $url, array $data = [], array $options = []): Response|ResponseInterfaceAlias
     {
@@ -56,7 +69,7 @@ trait HttpClientMethods
     }
 
     /**
-     * @param  array<string, mixed>  $options
+     * @param array<string, mixed> $options
      *
      * @throws TransportExceptionInterface
      */
@@ -76,7 +89,7 @@ trait HttpClientMethods
     }
 
     /**
-     * @param  array<string, mixed>  $options
+     * @param array<string, mixed> $options
      *
      * @throws TransportExceptionInterface
      */
@@ -86,7 +99,7 @@ trait HttpClientMethods
     }
 
     /**
-     * @param  array<string, mixed>  $options
+     * @param array<string, mixed> $options
      *
      * @throws TransportExceptionInterface
      */
