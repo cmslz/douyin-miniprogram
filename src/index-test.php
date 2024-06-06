@@ -28,23 +28,31 @@ $config = [
 //$result = $response->toArray(false);
 //var_dump($result);exit;
 
-$basic_auth = [
-    'certificate_type' => 1,
-    'entity_name' => '何强春',
-    'entity_type' => 1
-];
-$class_auth = [
-    'industry_class' => [
-        "first_class" => 0,
-        "second_class" => 0,
-        "third_class" => 0,
-    ],
-    'industry_code' => 10000,
-    'industry_role' => 3,
-    'partner' => ''
-];
-$app = \Cmslz\DouyinMiniProgram\Factory::panKnowledge($config);
+$app = \Cmslz\DouyinMiniProgram\Factory::panKnowledge($config)->role();
+// 上传文件素材
 $result = $app->upload_material(__DIR__ . '/demo.jpg', 1000);
+
+//$basic_auth = [
+//    'certificate_type' => 1,
+//    'entity_name' => '何强春',
+//    'entity_type' => 1
+//];
+//$class_auth = [
+//    'industry_class' => [
+//        "first_class" => 0,
+//        "second_class" => 0,
+//        "third_class" => 0,
+//    ],
+//    'industry_code' => 10000,
+//    'industry_role' => 3,
+//    'partner' => ''
+//];
+//$app->byself($basic_auth,$class_auth);
+var_dump($result);
+exit;
+
+
+
 //$appid = $app->getAccount()->getAppId();
 //$response = $app->getClient()->postJson('api/apps/v1/qrcode/create/', [
 //    'appid' => $appid,
