@@ -6,6 +6,7 @@
 
 namespace Cmslz\DouyinMiniProgram\Application;
 
+use Cmslz\DouyinMiniProgram\Application;
 use Cmslz\DouyinMiniProgram\Application\PanKnowledge\Course;
 use Cmslz\DouyinMiniProgram\Application\PanKnowledge\Role;
 use Cmslz\DouyinMiniProgram\Kernel\Traits\InteractWithApplication;
@@ -29,5 +30,10 @@ class PanKnowledge
     public function course(): Course
     {
         return new Course($this->application);
+    }
+
+    public function app(): Application
+    {
+        return $this->application;
     }
 }

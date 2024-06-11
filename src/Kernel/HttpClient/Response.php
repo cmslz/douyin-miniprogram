@@ -118,7 +118,6 @@ class Response implements Jsonable, Arrayable, ArrayAccess, ResponseInterface, S
         if ('' === $content = $this->response->getContent($throw)) {
             throw new BadResponseException('Response body is empty.');
         }
-
         $contentType = $this->getHeaderLine('content-type', $throw);
 
         if (str_contains($contentType, 'text/xml')
@@ -130,8 +129,13 @@ class Response implements Jsonable, Arrayable, ArrayAccess, ResponseInterface, S
                 throw new BadResponseException('Response body is not valid xml.', 400, $e);
             }
         }
-
-        return $this->response->toArray($throw);
+        $result = $this->response->toArray($throw);
+        $headers = $this->response->getHeaders($throw);
+        $logColumn = 'x-tt-logid';
+        if (!empty($headers[$logColumn])) {
+            $result[$logColumn] = is_array($headers[$logColumn]) && !empty($headers[$logColumn][0]) ? $headers[$logColumn][0] : $headers[$logColumn];
+        }
+        return $result;
     }
 
     /**

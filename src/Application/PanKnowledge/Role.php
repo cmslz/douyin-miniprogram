@@ -203,6 +203,7 @@ class Role
      * 查询类目认证资质
      * @link https://developer.open-douyin.com/docs/resource/zh-CN/mini-app/develop/server/pan-knowledge/role/query-category-qualification
      * @param string $merchant_entity_id
+     * @param int $industry_code
      * @param array $params
      * @return array
      * @throws BadResponseException
@@ -214,11 +215,12 @@ class Role
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function get_class_auth(string $merchant_entity_id, array $params = []): array
+    public function get_class_auth(string $merchant_entity_id, int $industry_code = 10000, array $params = []): array
     {
         $response = $this->application->getClient()->postJson('auth/entity/get_class_auth',
             $this->mergeAppidAndToken(array_merge($params, [
-                'merchant_entity_id' => $merchant_entity_id
+                'merchant_entity_id' => $merchant_entity_id,
+                'industry_code' => $industry_code
             ])));
         return $this->result($response);
     }
@@ -302,6 +304,7 @@ class Role
      * @link https://developer.open-douyin.com/docs/resource/zh-CN/mini-app/develop/server/pan-knowledge/role/miniapp-binding-role
      * @param int $industry_code
      * @param int $merchant_industry_role
+     * @param string $merchant_entity_id
      * @return array
      * @throws BadResponseException
      * @throws BaseException
@@ -312,12 +315,16 @@ class Role
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function bind_role(int $industry_code, int $merchant_industry_role): array
-    {
+    public function bind_role(
+        string $merchant_entity_id,
+        int $merchant_industry_role = 3,
+        int $industry_code = 10000
+    ): array {
         $response = $this->application->getClient()->postJson('auth/entity/bind_role',
             $this->mergeAppidAndToken([
                 'industry_code' => $industry_code,
-                'merchant_industry_role' => $merchant_industry_role
+                'merchant_industry_role' => $merchant_industry_role,
+                'merchant_entity_id' => $merchant_entity_id
             ]));
         return $this->result($response);
     }
@@ -654,7 +661,7 @@ class Role
         $response = $this->application->getClient()->postJson('auth/entity/query_entity_info',
             $this->mergeAppidAndToken([
                 'certificate_id' => $certificate_id,
-            ]));
+            ], true, ['appid' => 'app_id']));
         return $this->result($response);
     }
 

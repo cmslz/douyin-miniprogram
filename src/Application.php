@@ -184,7 +184,7 @@ class Application
     protected function getHttpClientDefaultOptions(): array
     {
         return array_merge(
-            ['base_uri' => $this->getEnv() === 'prod' ? 'https://open.douyin.com/' : 'https://open-sandbox.douyin.com/'],
+            ['base_uri' => $this->getEnv() === 'prod' ? 'https://developer.toutiao.com/' : 'https://open-sandbox.douyin.com/'],
             (array)$this->config->get('http', [])
         );
     }

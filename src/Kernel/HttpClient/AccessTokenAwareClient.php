@@ -63,6 +63,7 @@ class AccessTokenAwareClient implements AccessTokenAwareHttpClientInterface
         }
         $options['headers'] = $headers;
         $options = RequestUtil::formatBody($this->mergeThenResetPrepends($options));
+//        var_dump(json_encode($options));exit;
         return $this->requestCustom($method, $url, $options);
     }
 
