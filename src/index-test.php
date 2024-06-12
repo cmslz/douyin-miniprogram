@@ -196,64 +196,27 @@ $expiredTime = '2024-12-01';
 
 
 # 更新类目认证资质Start
-
-//$certificate = $test->upload($roleApp, __DIR__ . '/../营业执照（副）-群友2024.4.2(1).jpg', 1007,
-//    '营业执照.jpgv2' . $env);
-//$logo = $test->upload($roleApp, __DIR__ . '/../群友学院.jpg', 1008, '群友学院.jpg' . $env);
-//$front_path = $test->upload($roleApp, __DIR__ . '/../id_card1.png', 1000, 'id_card1.png' . $env);
-//$back_path = $test->upload($roleApp, __DIR__ . '/../id_card2.png', 1000, 'id_card2.png' . $env);
-//$cooperation_cases = [
-//    $test->upload($roleApp, __DIR__ . '/../教培行业私域运营解决方案v5.2_1650852985507.pdf', 1010,
-//        '教培行业私域运营解决方案v5' . $env)['path']
-//];
-//$cooperation_agreement = $test->upload($roleApp, __DIR__ . '/../承诺书.png', 1005, '承诺书.png' . $env);
-//$user_front_path = $test->upload($roleApp, __DIR__ . '/../user_id_card1.jpg', 1000, 'user_id_card1.jpg' . $env);
-//$user_back_path = $test->upload($roleApp, __DIR__ . '/../user_id_card2.jpg', 1000, 'user_id_card2.jpg' . $env);
-//$params = [
-//    "partner_entity_id"=> "",
-//    "merchant_entity_id"=> "I_7177356117591244844",
-//    "industry_code"=> 10000,
-//    "class"=> [
-//        "first_class"=> 40000,
-//        "second_class"=> 40600,
-//        "third_class"=> 0
-//    ],
-//    "industry_role"=> 2,
-//    "merchant_qualifications"=> [
-//        [
-//            "material_type"=> 1003,
-//            "material_expiretime"=> "",
-//            "material_paths"=> [
-//            "certification/resource/74ed50a56eaa6782d96a55f157974720"
-//        ]
-//        ]
-//    ],
-//    "institution"=> [
-//        "record_name"=> "xxx合作优先公司",
-//        "scene_type"=> "线上机构",
-//        "subject_type"=> "企业工商户",
-//        "logo_uri"=> "certification/resource/74ed50a56eaa6782d96a55f15xxx",
-//        "trademark_uri"=> "certification/resource/74ed50a56eaa6782d96a55f1579yyy",
-//        "desc"=> "机构描述",
-//        "employee"=> [
-//            "employee_material"=> [
-//                "name"=> "王xx",
-//                "id_number"=> "411938171723773",
-//                "expire_time"=> "2033-10-10",
-//                "front_path"=> "certification/resource/74ed50a56eaa6782d96a55f15xxxx",
-//                "back_path"=> "certification/resource/74ed50a56eaa6782d96a55f157xxxxx"
-//            ],
-//            "cooperation_agreement"=> [
-//                "material_type"=> 1005,
-//                "material_expiretime"=> "2023-10-10",
-//                "material_paths"=> [
-//                    "certification/resource/74ed50a56eaa6782d96xxxxf157xxxxx"
-//                ]
-//            ]
-//        ]
-//    ]
-//];
-//$result = $roleApp->update_class_auth('E_7378773674637344822',$params);
+$qualifications_path = $test->upload($roleApp, __DIR__ . '/../承诺书.png', 1001, '承诺书.png');
+$class_auth = [
+    "industry_code" => 10000,
+    "industry_class" => [
+        "first_class" => 40000,
+        "second_class" => 40600,
+        "third_class" => 0
+    ],
+    "industry_role" => 1,
+    "merchant_qualifications" => [
+        [
+            "material_type" => 1005,
+            "material_expiretime" => $expiredTime,
+            "material_paths" => [
+                $qualifications_path['path']
+            ]
+        ]
+    ],
+    'partner_entity_id' => 'E_7378773674637344822'
+];
+$result = $roleApp->update_class_auth('I_7379135698705793087', $class_auth);
 # 更新类目认证资质End
 
 
@@ -263,15 +226,15 @@ $expiredTime = '2024-12-01';
 
 
 # 查询类目认证资质Start
-$result = $roleApp->get_class_auth('I_7379135698705793087', 10000, [
-    'partner_entity_id' => 'E_7378773674637344822',
-    'industry_role' => 1,
-    'industry_class' => [
-        "first_class" => 40000,
-        "second_class" => 40600,
-        "third_class" => 0
-    ]
-]);
+//$result = $roleApp->get_class_auth('I_7379135698705793087', 10000, [
+//    'partner_entity_id' => 'E_7378773674637344822',
+//    'industry_role' => 1,
+//    'industry_class' => [
+//        "first_class" => 40000,
+//        "second_class" => 40600,
+//        "third_class" => 0
+//    ]
+//]);
 # 查询类目认证资质End
 
 
@@ -464,7 +427,7 @@ $result = $roleApp->get_class_auth('I_7379135698705793087', 10000, [
 //    "industry_role" => 1,
 //    "qualifications" => [
 //        [
-//            "material_type" => 1001,
+//            "material_type" => 1005,
 //            "material_expiretime" => $expiredTime,
 //            "material_paths" => [
 //                $qualifications_path['path']
