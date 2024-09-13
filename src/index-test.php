@@ -28,7 +28,16 @@ $config = [
 //]);
 //$result = $response->toArray(false);
 //var_dump($result);exit;
-$app = \Cmslz\DouyinMiniProgram\Factory::panKnowledge($config);
+//$app = \Cmslz\DouyinMiniProgram\Factory::userClient($config);
+//$result = $app->utils()->codeToSession('mS0ZrindTzcEwHulpa2CS_hnbYPZSiIFs-HR55yIOo9-VTChO6Pdx5BtPua-wCYVllb-0N0wxexYrRY_IQ3jLdm9dbROh5eApwNlm7PDXAGkBHoUxu8YYGegFZA','luEFn3pafvs4pHe3vmUS4IWrgcvomvi_Z9gOM-X2T0wiiuW3b1Vmk6fYq7IG7uT3YRgIPyi1w-kmq8z3DJrQxgner2YgAooXEUMkLg);
+$app = \Cmslz\DouyinMiniProgram\Factory::share($config);
+$result = $app->schema()->generate(false, ['expire_time' => time() + 86400]);
+var_dump($result);
+exit;
+
+$result = $app->getAccessToken();
+var_dump($result->getClientAssessTokenOld());
+exit;
 
 class Test
 {

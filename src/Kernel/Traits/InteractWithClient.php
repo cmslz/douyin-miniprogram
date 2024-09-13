@@ -6,27 +6,45 @@
 
 namespace Cmslz\DouyinMiniProgram\Kernel\Traits;
 
+use Cmslz\DouyinMiniProgram\AccessToken;
+use Cmslz\DouyinMiniProgram\Kernel\Contracts\AccessToken as AccessTokenInterface;
 use Cmslz\DouyinMiniProgram\Kernel\HttpClient\AccessTokenAwareClient;
+use Cmslz\DouyinMiniProgram\Kernel\HttpClient\Response;
+use Symfony\Component\HttpClient\RetryableHttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 trait InteractWithClient
 {
-    protected ?AccessTokenAwareClient $client = null;
-
-    public function getClient(): AccessTokenAwareClient
+    public function createClient(HttpClientInterface $client, AccessTokenInterface $accessToken): AccessTokenAwareClient
     {
-        if (!$this->client) {
-            $this->client = $this->createClient();
+        if ((bool)$this->config->get('http.retry', false)) {
+            $client = new RetryableHttpClient(
+                $client,
+                $this->getRetryStrategy(),
+                (int)$this->config->get('http.max_retries', 2) // @phpstan-ignore-line
+            );
         }
-
-        return $this->client;
+        return (new AccessTokenAwareClient(
+            client: $client,
+            accessToken: $accessToken,
+            failureJudge: fn(
+                Response $response
+            ) => (bool)($response->toArray()['errcode'] ?? 0) || !is_null($response->toArray()['error'] ?? null),
+            throw: (bool)$this->config->get('http.throw', true),
+        ))->setPresets($this->config->all());
     }
 
-    public function setClient(AccessTokenAwareClient $client): static
+    protected function getAccessToken(HttpClientInterface $client)
     {
-        $this->client = $client;
-
-        return $this;
+        return new AccessToken(
+            appId: $this->getAccount()->getAppId(),
+            secret: $this->getAccount()->getSecret(),
+            cache: $this->getCache(),
+            httpClient: $client
+        );
     }
 
-    abstract public function createClient(): AccessTokenAwareClient;
+    abstract public function createOpenClient(): AccessTokenAwareClient;
+
+    abstract public function createTouTiAoClient(): AccessTokenAwareClient;
 }

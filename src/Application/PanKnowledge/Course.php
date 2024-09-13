@@ -216,7 +216,7 @@ class Course
         if (!empty($callback_data)) {
             $params['callback_data'] = $callback_data;
         }
-        $response = $this->application->getClient()->postJson('product/api/upload_resource',
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/upload_resource',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -240,7 +240,7 @@ class Course
         $params = [
             'resource_uri' => $resource_uri,
         ];
-        $response = $this->application->getClient()->postJson('product/api/query_resource_status',
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/query_resource_status',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -264,7 +264,7 @@ class Course
         $params = [
             'object_id_with_classifications' => $object_id_with_classifications,
         ];
-        $response = $this->application->getClient()->postJson('product/api/query_qualification',
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/query_qualification',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -290,7 +290,7 @@ class Course
             'product' => $product,
             'product_type' => $product_type,
         ];
-        $response = $this->application->getClient()->postJson('product/api/add', $this->mergeAppidAndToken($params));
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/add', $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
 
@@ -317,7 +317,7 @@ class Course
             'product' => $product,
             'product_type' => $product_type,
         ];
-        $response = $this->application->getClient()->postJson('product/api/modify', $this->mergeAppidAndToken($params));
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/modify', $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
 
@@ -345,7 +345,7 @@ class Course
                 'status' => $status,
             ]
         ];
-        $response = $this->application->getClient()->postJson('product/api/modify_status',
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/modify_status',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -369,7 +369,7 @@ class Course
         $params = [
             'product_ids' => $product_ids,
         ];
-        $response = $this->application->getClient()->postJson('product/api/query', $this->mergeAppidAndToken($params));
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/query', $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
 
@@ -398,7 +398,7 @@ class Course
         if (!empty($product)) {
             $params['product'] = $product;
         }
-        $response = $this->application->getClient()->postJson('product/api/modify_no_audit',
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/modify_no_audit',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -418,7 +418,7 @@ class Course
      */
     public function query_template_info(): array
     {
-        $response = $this->application->getClient()->postJson('product/api/query_template_info',
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/query_template_info',
             $this->mergeAppidAndToken());
         return $this->result($response);
     }
@@ -442,7 +442,7 @@ class Course
         $params = [
             'refund_rule_map' => $refund_rule_map,
         ];
-        $response = $this->application->getClient()->postJson('product/api/modify_refund_rule',
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/modify_refund_rule',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -463,7 +463,7 @@ class Course
      */
     public function query_refund_rule_meta(): array
     {
-        $response = $this->application->getClient()->postJson('product/api/query_refund_rule_meta',
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/query_refund_rule_meta',
             $this->mergeAppidAndToken());
         return $this->result($response);
     }
@@ -483,7 +483,7 @@ class Course
      */
     public function query_class_info(): array
     {
-        $response = $this->application->getClient()->postJson('product/api/query_class_info',
+        $response = $this->application->getTouTiAoClient()->postJson('product/api/query_class_info',
             $this->mergeAppidAndToken());
         return $this->result($response);
     }

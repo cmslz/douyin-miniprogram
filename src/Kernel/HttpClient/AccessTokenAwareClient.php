@@ -51,19 +51,18 @@ class AccessTokenAwareClient implements AccessTokenAwareHttpClientInterface
      * @param string $method
      * @param string $url
      * @param array<string, mixed> $options
-     * @param bool $mergeHeaderToken
+     * @param bool $oldToken
      * @return Response
      * @throws InvalidArgumentException
      */
-    public function request(string $method, string $url, array $options = [], bool $mergeHeaderToken = true): Response
+    public function request(string $method, string $url, array $options = [], bool $oldToken = false): Response
     {
         $headers = $options['headers'] ?? [];
-        if ($this->accessToken && $mergeHeaderToken) {
-            $headers = array_merge($headers, $this->accessToken->toClientTokenQuery());
+        if ($this->accessToken) {
+            $headers = array_merge($headers, $this->accessToken->toClientTokenQuery($oldToken));
         }
         $options['headers'] = $headers;
         $options = RequestUtil::formatBody($this->mergeThenResetPrepends($options));
-//        var_dump(json_encode($options));exit;
         return $this->requestCustom($method, $url, $options);
     }
 

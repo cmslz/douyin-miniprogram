@@ -18,5 +18,5 @@ interface AccessToken
     /**
      * @return array<string,string>
      */
-    public function toClientTokenQuery(): array;
+    public function toClientTokenQuery(bool $oldToken): array;
 }

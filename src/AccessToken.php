@@ -172,7 +172,7 @@ class AccessToken implements RefreshableAccessTokenInterface
         return $this->refreshClientToken($oldToken);
     }
 
-    public function toClientTokenQuery(bool $oldToken = false): array
+    public function toClientTokenQuery(bool $oldToken): array
     {
         return ['access-token' => $this->getClientToken($oldToken)];
     }

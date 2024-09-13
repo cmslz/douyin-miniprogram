@@ -62,7 +62,7 @@ class Role
         // 获取表单头和内容
         $contentType = $formData->getPreparedHeaders()->get('Content-Type')->getBodyAsString();
         $body = $formData->bodyToString();
-        $response = $this->application->getClient()->requestCustom('POST', 'auth/entity/upload_material', [
+        $response = $this->application->getTouTiAoClient()->requestCustom('POST', 'auth/entity/upload_material', [
             'headers' => [
                 'Content-Type' => $contentType
             ],
@@ -90,7 +90,7 @@ class Role
      */
     public function bypartner(array $basic_auth, array $class_auth, string $entity_id): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/bypartner', $this->mergeAppidAndToken([
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/bypartner', $this->mergeAppidAndToken([
             'basic_auth' => $basic_auth,
             'class_auth' => $class_auth,
             'entity_id' => $entity_id
@@ -116,7 +116,7 @@ class Role
      */
     public function byself(array $basic_auth, array $class_auth): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/byself', $this->mergeAppidAndToken([
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/byself', $this->mergeAppidAndToken([
             'basic_auth' => $basic_auth,
             'class_auth' => $class_auth,
         ]));
@@ -142,7 +142,7 @@ class Role
      */
     public function add_role(string $entity_id, int $industry_role, array $params): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/add_role',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/add_role',
             $this->mergeAppidAndToken(array_merge($params, [
                 'entity_id' => $entity_id,
                 'industry_role' => $industry_role
@@ -166,7 +166,7 @@ class Role
      */
     public function get_basic_auth(string $entity_id): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/get_basic_auth',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/get_basic_auth',
             $this->mergeAppidAndToken([
                 'entity_id' => $entity_id
             ]));
@@ -191,7 +191,7 @@ class Role
      */
     public function update_basic_auth(string $merchant_entity_id, string $entity_name, array $params): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/update_basic_auth',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/update_basic_auth',
             $this->mergeAppidAndToken(array_merge($params, [
                 'entity_name' => $entity_name,
                 'merchant_entity_id' => $merchant_entity_id
@@ -217,7 +217,7 @@ class Role
      */
     public function get_class_auth(string $merchant_entity_id, int $industry_code = 10000, array $params = []): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/get_class_auth',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/get_class_auth',
             $this->mergeAppidAndToken(array_merge($params, [
                 'merchant_entity_id' => $merchant_entity_id,
                 'industry_code' => $industry_code
@@ -242,7 +242,7 @@ class Role
      */
     public function update_class_auth(string $merchant_entity_id, array $params = []): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/update_class_auth',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/update_class_auth',
             $this->mergeAppidAndToken(array_merge($params, [
                 'merchant_entity_id' => $merchant_entity_id
             ])));
@@ -267,7 +267,7 @@ class Role
      */
     public function add_class_auth(string $merchant_entity_id, array $params = []): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/add_class_auth',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/add_class_auth',
             $this->mergeAppidAndToken(array_merge($params, [
                 'merchant_entity_id' => $merchant_entity_id
             ])));
@@ -291,7 +291,7 @@ class Role
      */
     public function get_audit_detail(string $auth_taskid, int $auth_type): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/get_audit_detail',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/get_audit_detail',
             $this->mergeAppidAndToken([
                 'auth_taskid' => $auth_taskid,
                 'auth_type' => $auth_type
@@ -320,7 +320,7 @@ class Role
         int $merchant_industry_role = 3,
         int $industry_code = 10000
     ): array {
-        $response = $this->application->getClient()->postJson('auth/entity/bind_role',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/bind_role',
             $this->mergeAppidAndToken([
                 'industry_code' => $industry_code,
                 'merchant_industry_role' => $merchant_industry_role,
@@ -346,7 +346,7 @@ class Role
      */
     public function unbind_role(int $industry_code, int $merchant_industry_role): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/unbind_role',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/unbind_role',
             $this->mergeAppidAndToken([
                 'industry_code' => $industry_code,
                 'merchant_industry_role' => $merchant_industry_role
@@ -369,7 +369,7 @@ class Role
      */
     public function get_bind_list(): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/get_bind_list',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/get_bind_list',
             $this->mergeAppidAndToken());
         return $this->result($response);
     }
@@ -401,7 +401,7 @@ class Role
         string $nick,
         array $params = []
     ): array {
-        $response = $this->application->getClient()->postJson('auth/entity/auth_role',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/auth_role',
             $this->mergeAppidAndToken(array_merge($params, [
                 'desc' => $desc,
                 'icon' => $icon,
@@ -440,7 +440,7 @@ class Role
         if (!empty($partner_entity_id)) {
             $params['partner_entity_id'] = $partner_entity_id;
         }
-        $response = $this->application->getClient()->postJson('auth/entity/unauth_role',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/unauth_role',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -473,7 +473,7 @@ class Role
         if (!empty($partner_entity_id)) {
             $params['partner_entity_id'] = $partner_entity_id;
         }
-        $response = $this->application->getClient()->postJson('auth/entity/get_appid_auth',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/get_appid_auth',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -505,7 +505,7 @@ class Role
         string $nick,
         array $params = []
     ): array {
-        $response = $this->application->getClient()->postJson('auth/entity/update_authletter',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/update_authletter',
             $this->mergeAppidAndToken(array_merge($params, [
                 'desc' => $desc,
                 'icon' => $icon,
@@ -541,7 +541,7 @@ class Role
         string $id,
         string $column = 'openid'
     ): array {
-        $response = $this->application->getClient()->postJson('auth/entity/query_mountscope',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/query_mountscope',
             $this->mergeAppidAndToken([
                 'industry_code' => $industry_code,
                 'industry_role' => $industry_role,
@@ -589,7 +589,7 @@ class Role
         } else {
             $params[$column] = $id;
         }
-        $response = $this->application->getClient()->postJson('auth/entity/enable_mountscope',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/enable_mountscope',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -637,7 +637,7 @@ class Role
         if (!empty($partner_entity_id)) {
             $params['partner_entity_id'] = $partner_entity_id;
         }
-        $response = $this->application->getClient()->postJson('auth/entity/unbind_account',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/unbind_account',
             $this->mergeAppidAndToken($params));
         return $this->result($response);
     }
@@ -658,7 +658,7 @@ class Role
      */
     public function query_entity_info(string $certificate_id): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/query_entity_info',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/query_entity_info',
             $this->mergeAppidAndToken([
                 'certificate_id' => $certificate_id,
             ], true, ['appid' => 'app_id']));
@@ -683,7 +683,7 @@ class Role
      */
     public function query_bind_toc_list(int $industry_code, int $industry_role, string $merchant_entity_id): array
     {
-        $response = $this->application->getClient()->postJson('auth/entity/query_bind_toc_list',
+        $response = $this->application->getTouTiAoClient()->postJson('auth/entity/query_bind_toc_list',
             $this->mergeAppidAndToken([
                 'industry_code' => $industry_code,
                 'industry_role' => $industry_role,
