@@ -42,16 +42,20 @@ class AccessToken implements RefreshableAccessTokenInterface
      * @param string $method
      * @param string $url
      * @param array $options
+     * @param string $type
      * @return Response
      * @throws Kernel\Exceptions\InvalidArgumentException
-     * @throws TransportExceptionInterface
-     * Created by xiaobai at 2024/5/30 下午4:09
+     * @throws TransportExceptionInterface Created by xiaobai at 2024/5/30 下午4:09
      */
-    public function request(string $method, string $url, array $options = []): Response
-    {
+    public function request(
+        string $method,
+        string $url,
+        array $options = [],
+        string $type = self::CACHE_CLIENT_OLD_TOKEN
+    ): Response {
         $options = RequestUtil::formatBody($options);
         return new Response(
-            response: $this->httpClient->request($method, ltrim($url, '/'), $options),
+            response: $this->httpClient->request($method, ltrim($url, '/'), $options, $type),
         );
     }
 
@@ -70,7 +74,7 @@ class AccessToken implements RefreshableAccessTokenInterface
     }
 
     /**
-     * @param bool $oldToken
+     * @param string $type
      * @return string
      * @throws BadResponseException
      * @throws ClientExceptionInterface
@@ -82,23 +86,18 @@ class AccessToken implements RefreshableAccessTokenInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function refreshClientToken(bool $oldToken = false): string
+    public function refreshToken(string $type): string
     {
-        return $oldToken ? $this->getClientAssessTokenOld() : $this->getClientAssessToken();
+        return $type === self::CACHE_CLIENT_OLD_TOKEN ? $this->getClientAssessTokenOld() : $this->getClientAssessToken();
     }
 
     /**
      * getAccessToken
      * @link https://developer.open-douyin.com/docs/resource/zh-CN/mini-app/develop/server/interface-request-credential/non-user-authorization/get-access-token
      * @return string
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
      * @throws HttpException
      * @throws InvalidArgumentException
-     * @throws BadResponseException
      * @throws Kernel\Exceptions\InvalidArgumentException
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
     public function getClientAssessTokenOld(): string
@@ -112,7 +111,8 @@ class AccessToken implements RefreshableAccessTokenInterface
                     'appid' => $this->appId,
                     'secret' => $this->secret,
                 ],
-            ]
+            ],
+            self::CACHE_CLIENT_OLD_TOKEN
         );
         if (empty($response['data']['access_token'])) {
             throw new HttpException('Failed to get access_token: ' . json_encode($response, JSON_UNESCAPED_UNICODE));
@@ -148,7 +148,8 @@ class AccessToken implements RefreshableAccessTokenInterface
                     'client_key' => $this->appId,
                     'client_secret' => $this->secret,
                 ],
-            ]
+            ],
+            self::CACHE_CLIENT_TOKEN
         )->toArray(false);
 
         if (empty($response['data']['access_token'])) {
@@ -161,19 +162,19 @@ class AccessToken implements RefreshableAccessTokenInterface
         return $response['data']['access_token'];
     }
 
-    public function getClientToken(bool $oldToken = false): string
+    public function getToken(string $type): string
     {
-        $token = $this->cache->get($this->getKey($oldToken ? self::CACHE_CLIENT_OLD_TOKEN : self::CACHE_CLIENT_TOKEN));
+        $token = $this->cache->get($this->getKey($type));
 
         if ((bool)$token && is_string($token)) {
             return $token;
         }
 
-        return $this->refreshClientToken($oldToken);
+        return $this->refreshToken($type);
     }
 
-    public function toClientTokenQuery(bool $oldToken): array
+    public function toTokenQuery(string $type): array
     {
-        return ['access-token' => $this->getClientToken($oldToken)];
+        return ['access-token' => $this->getToken($type)];
     }
 }

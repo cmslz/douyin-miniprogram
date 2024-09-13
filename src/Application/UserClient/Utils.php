@@ -22,7 +22,7 @@ class Utils
                 'anonymous_code' => $anonymous_code,
                 'code' => $code
             ],
-        ], false)->toArray(false);
+        ])->toArray(false);
         if(!empty($response['err_no'])){
             throw new HttpException('code2Session error: ' . json_encode($response, JSON_UNESCAPED_UNICODE));
         }

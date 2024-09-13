@@ -13,7 +13,7 @@ trait InteractWithMergeAppidAndAccessToken
         $accessTokenColumn = $columns['access_token'] ?? 'access_token';
         $appidColumn = $columns['appid'] ?? 'appid';
         return array_merge($data, [
-            $accessTokenColumn => $this->application->getAccessToken()->getClientToken($useOldToken),
+            $accessTokenColumn => $this->application->getAccessToken()->getToken($useOldToken),
             $appidColumn => $this->application->getAccount()->getAppId()
         ]);
     }

@@ -13,10 +13,10 @@ interface AccessToken
      * @return string
      * Created by xiaobai at 2024/5/30 下午4:36
      */
-    public function getClientToken(): string;
+    public function getToken(string $type): string;
 
     /**
      * @return array<string,string>
      */
-    public function toClientTokenQuery(bool $oldToken): array;
+    public function toTokenQuery(string $type): array;
 }

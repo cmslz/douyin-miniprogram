@@ -4,5 +4,5 @@ namespace Cmslz\DouyinMiniProgram\Kernel\Contracts;
 
 interface RefreshableAccessToken extends AccessToken
 {
-    public function refreshClientToken(): string;
+    public function refreshToken(string $type): string;
 }

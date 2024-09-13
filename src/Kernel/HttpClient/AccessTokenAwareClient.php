@@ -7,6 +7,7 @@
 namespace Cmslz\DouyinMiniProgram\Kernel\HttpClient;
 
 use Closure;
+use Cmslz\DouyinMiniProgram\AccessToken;
 use Cmslz\DouyinMiniProgram\Kernel\Contracts\AccessToken as AccessTokenInterface;
 use Cmslz\DouyinMiniProgram\Kernel\Contracts\AccessTokenAwareHttpClient as AccessTokenAwareHttpClientInterface;
 use Cmslz\DouyinMiniProgram\Kernel\Exceptions\InvalidArgumentException;
@@ -51,15 +52,15 @@ class AccessTokenAwareClient implements AccessTokenAwareHttpClientInterface
      * @param string $method
      * @param string $url
      * @param array<string, mixed> $options
-     * @param bool $oldToken
+     * @param string $type
      * @return Response
      * @throws InvalidArgumentException
      */
-    public function request(string $method, string $url, array $options = [], bool $oldToken = false): Response
+    public function request(string $method, string $url, array $options = [], string $type = AccessToken::CACHE_CLIENT_OLD_TOKEN): Response
     {
         $headers = $options['headers'] ?? [];
         if ($this->accessToken) {
-            $headers = array_merge($headers, $this->accessToken->toClientTokenQuery($oldToken));
+            $headers = array_merge($headers, $this->accessToken->toTokenQuery($type));
         }
         $options['headers'] = $headers;
         $options = RequestUtil::formatBody($this->mergeThenResetPrepends($options));

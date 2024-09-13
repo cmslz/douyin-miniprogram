@@ -29,7 +29,7 @@ $config = [
 //$result = $response->toArray(false);
 //var_dump($result);exit;
 //$app = \Cmslz\DouyinMiniProgram\Factory::userClient($config);
-//$result = $app->utils()->codeToSession('mS0ZrindTzcEwHulpa2CS_hnbYPZSiIFs-HR55yIOo9-VTChO6Pdx5BtPua-wCYVllb-0N0wxexYrRY_IQ3jLdm9dbROh5eApwNlm7PDXAGkBHoUxu8YYGegFZA','luEFn3pafvs4pHe3vmUS4IWrgcvomvi_Z9gOM-X2T0wiiuW3b1Vmk6fYq7IG7uT3YRgIPyi1w-kmq8z3DJrQxgner2YgAooXEUMkLg);
+//$result = $app->utils()->codeToSession('2rUYMmuK7hWhm6TgKQp7mNVK-CsMcryVoezqADIdIfxA1fvu6z6_WwLdUZLcooMvbLJ4FmpDldgAbQLqHkqEPMm1dYDu7iKpRDKE0I8GSMgkDB38kHfZjuwGpoM','oU-Pgs4ZbY2gU4IZWEVdjd3wDE0xWMZums4U_j-sQU7ZO8B82zwnqB8Xh-U4U7iakCb7PwhPVVGGUlQ3uLLH4r-cBrVrNzxcQgsfRg');
 $app = \Cmslz\DouyinMiniProgram\Factory::share($config);
 $result = $app->schema()->generate(false, ['expire_time' => time() + 86400]);
 var_dump($result);

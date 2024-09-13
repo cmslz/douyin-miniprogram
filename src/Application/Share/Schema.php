@@ -6,6 +6,7 @@
 
 namespace Cmslz\DouyinMiniProgram\Application\Share;
 
+use Cmslz\DouyinMiniProgram\AccessToken;
 use Cmslz\DouyinMiniProgram\Kernel\Traits\InteractWithApplication;
 
 class Schema
@@ -31,7 +32,7 @@ class Schema
         $result = $this->application->getOpenClient()->request('POST',
             '/api/apps/v1/url/generate_schema/', [
                 'json' => $data
-            ]);
+            ], AccessToken::CACHE_CLIENT_TOKEN);
         var_dump($result->getContent());
     }
 }
